@@ -182,7 +182,8 @@ class Resque_Worker
 						$this->updateProcLine('Waiting for ' . implode(',', $this->queues));
 					}
 
-					usleep($interval * 1000000);
+					if (sleep($interval)) // use sleep in order to know if we exit because of a signal
+						$this->shutdown = true;
 				}
 
 				continue;
